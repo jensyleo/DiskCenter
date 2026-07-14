@@ -14,3 +14,9 @@ xcuserdata/
 
 # Publish staging (sibling copies for review; not part of the repo)
 Publicar GitHub/
+
+# Internal working docs — kept locally only, not published to GitHub
+ROADMAP.md
+TESTING.md
+INTERRUPTION-RECOVERY.md
+CHANGELOG.md
