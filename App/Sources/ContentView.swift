@@ -291,7 +291,6 @@ private struct DiskOperationsRow: View {
                     Label("Create Image…", systemImage: "square.and.arrow.down")
                 }
                 .help("Create a raw image of this disk and checksum it (compression: \(settings.defaultCompression.rawValue))")
-                .accessibilityLabel("Create Image")
 
                 Button {
                     operations.beginBackupGPT(disk: disk)
@@ -299,7 +298,6 @@ private struct DiskOperationsRow: View {
                     Label("Backup GPT…", systemImage: "doc.badge.gearshape")
                 }
                 .help("Save the disk's partition table for later restoration")
-                .accessibilityLabel("Backup GPT")
 
                 Button {
                     operations.beginCloneDiskSetup(source: disk, availableDisks: allDisks)
@@ -307,7 +305,6 @@ private struct DiskOperationsRow: View {
                     Label("Clone to…", systemImage: "doc.on.doc")
                 }
                 .help("Copy this disk to another disk, overwriting it (source is read-only, even the system disk)")
-                .accessibilityLabel("Clone to another disk")
 
                 Button {
                     operations.beginVerifyDisk(diskID: disk.id, label: disk.model ?? disk.id)
@@ -315,7 +312,6 @@ private struct DiskOperationsRow: View {
                     Label("Verify Disk", systemImage: "checkmark.seal")
                 }
                 .help("Read-only check for filesystem issues")
-                .accessibilityLabel("Verify Disk")
 
                 Button {
                     operations.beginRepairDisk(diskID: disk.id, label: disk.model ?? disk.id)
@@ -323,7 +319,6 @@ private struct DiskOperationsRow: View {
                     Label("Repair Disk", systemImage: "wrench.and.screwdriver")
                 }
                 .help("Actively fix filesystem issues (writes to the disk)")
-                .accessibilityLabel("Repair Disk")
             }
 
             if !disk.isSystemDisk {
@@ -334,7 +329,6 @@ private struct DiskOperationsRow: View {
                 }
                 .help("Permanently erase all data on this disk")
                 .foregroundStyle(.red)
-                .accessibilityLabel("Secure Erase")
             }
         }
         .buttonStyle(.borderless)
