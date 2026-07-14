@@ -175,6 +175,25 @@ private final class Counter: @unchecked Sendable {
         #expect(disk.isRemovable)
     }
 
+    @Test func synthesizedAPFSContainerIsMarkedVirtual() {
+        // A container whole-disk (e.g. disk3) carries its own APFSPhysicalStores
+        // pointing at the real disk backing it — its Size double-counts that
+        // disk's bytes if summed alongside it (found via live Dashboard testing:
+        // a single 500 GB SSD showed as "1 TB Total Capacity").
+        let info: [String: Any] = [
+            "APFSPhysicalStores": [["APFSPhysicalStore": "disk0s2"]],
+            "Size": NSNumber(value: 494_384_795_648),
+        ]
+        let disk = DiskService.makeDisk(id: "disk3", info: info, partitions: [], isSystemDisk: false)
+        #expect(disk.isVirtual)
+    }
+
+    @Test func realPhysicalDiskIsNotMarkedVirtual() {
+        let info: [String: Any] = ["Internal": true, "Size": NSNumber(value: 500_277_792_768)]
+        let disk = DiskService.makeDisk(id: "disk0", info: info, partitions: [], isSystemDisk: false)
+        #expect(!disk.isVirtual)
+    }
+
     @Test func systemWholeDiskIDResolvesThroughPhysicalStore() throws {
         // "/" → APFSPhysicalStores[0] (disk0s2) → ParentWholeDisk (disk0).
         let rootPlist = plistData([

@@ -17,7 +17,7 @@ xcodebuild -project DiskCenter.xcodeproj -scheme DiskCenter \
 APP="build/DerivedData/Build/Products/Debug/DiskCenter.app"
 DEST="/Applications/DiskCenter.app"
 
-echo "▸ Installing to $DEST…"
+echo "▸ Installing to $DEST …"
 rm -rf "$DEST"
 cp -R "$APP" "$DEST"
 

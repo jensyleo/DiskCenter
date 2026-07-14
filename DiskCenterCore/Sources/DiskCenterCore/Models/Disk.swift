@@ -69,6 +69,13 @@ public struct Disk: Identifiable, Sendable, Codable, Equatable, Hashable {
     /// Drives erase-strategy selection (spec §2 decision #3): multi-pass wipes
     /// are meaningless (and harmful) on SSD/NVMe — see `EraseService`.
     public let mediaKind: MediaKind
+    /// True for a synthesized APFS container whole-disk (e.g. Apple Silicon's
+    /// ISC/Recovery/main containers, `disk1`/`disk2`/`disk3` alongside the real
+    /// `disk0`) — it has its own BSD whole-disk identifier but is backed by the
+    /// SAME physical bytes as its `APFSPhysicalStores` parent, not additional
+    /// storage. Callers summing capacity across disks must exclude these to
+    /// avoid double-counting the same physical disk.
+    public let isVirtual: Bool
 
     public var bsdName: String { id }
     public var devicePath: String { "/dev/\(id)" }
@@ -83,7 +90,8 @@ public struct Disk: Identifiable, Sendable, Codable, Equatable, Hashable {
         isRemovable: Bool = false,
         isSystemDisk: Bool = false,
         partitions: [Partition] = [],
-        mediaKind: MediaKind = .unknown
+        mediaKind: MediaKind = .unknown,
+        isVirtual: Bool = false
     ) {
         self.id = id
         self.model = model
@@ -93,5 +101,6 @@ public struct Disk: Identifiable, Sendable, Codable, Equatable, Hashable {
         self.isSystemDisk = isSystemDisk
         self.partitions = partitions
         self.mediaKind = mediaKind
+        self.isVirtual = isVirtual
     }
 }

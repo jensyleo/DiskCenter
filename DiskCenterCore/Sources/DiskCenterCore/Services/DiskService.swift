@@ -209,6 +209,11 @@ public struct DiskService: Sendable {
         // signal, but Bootable at the whole-container level is NOT — see
         // `systemWholeDiskID` for the authoritative check used by listDisks().
         let systemImage = (info?["OSInternal"] as? Bool) ?? false
+        // A synthesized APFS container whole-disk carries its own
+        // `APFSPhysicalStores` array pointing at the real physical disk that
+        // backs it — its `Size` is NOT additional physical storage. See
+        // `Disk.isVirtual`.
+        let isVirtual = (info?["APFSPhysicalStores"] as? [[String: Any]])?.isEmpty == false
 
         return Disk(
             id: id,
@@ -218,7 +223,8 @@ public struct DiskService: Sendable {
             isRemovable: isRemovable,
             isSystemDisk: isSystemDisk || systemImage,
             partitions: partitions,
-            mediaKind: mediaKind(info: info, isInternal: isInternal)
+            mediaKind: mediaKind(info: info, isInternal: isInternal),
+            isVirtual: isVirtual
         )
     }
 

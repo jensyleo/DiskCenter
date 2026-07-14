@@ -13,8 +13,13 @@ import SwiftUI
 struct DashboardView: View {
     let model: DisksViewModel
 
+    /// Excludes synthesized APFS container whole-disks (`Disk.isVirtual`) —
+    /// summing their size alongside the real physical disk that backs them
+    /// double-counts the same physical bytes (e.g. a single 500 GB SSD would
+    /// otherwise show as ~1 TB, since Apple Silicon splits it into an ISC,
+    /// Recovery, and main APFS container, each its own whole-disk entry).
     private var totalCapacity: Int64 {
-        model.disks.compactMap(\.size).reduce(0, +)
+        model.disks.filter { !$0.isVirtual }.compactMap(\.size).reduce(0, +)
     }
 
     private var healthCounts: (verified: Int, failing: Int, other: Int) {
