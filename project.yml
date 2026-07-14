@@ -1,0 +1,54 @@
+name: DiskCenter
+options:
+  bundleIdPrefix: com.jensyleo
+  deploymentTarget:
+    macOS: "15.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DISKCENTER_COPYRIGHT: "© 2026 Jensy Leonardo Martínez Cruz. GPLv3."
+    # Ad-hoc signing ("Sign to Run Locally") — real ad-hoc, not linker-signed,
+    # so macOS system services accept the app. No paid Developer ID required.
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Manual
+    ENABLE_HARDENED_RUNTIME: NO
+    SWIFT_VERSION: "6.0"
+
+packages:
+  DiskCenterCore:
+    path: DiskCenterCore
+
+targets:
+  DiskCenter:
+    type: application
+    platform: macOS
+    sources:
+      - App/Sources
+      - path: App/Resources
+        buildPhase: resources
+        excludes:
+          - Info.plist
+    dependencies:
+      - package: DiskCenterCore
+        product: DiskCenterCore
+    info:
+      path: App/Resources/Info.plist
+      properties:
+        CFBundleName: DiskCenter
+        CFBundleDisplayName: DiskCenter
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSHumanReadableCopyright: $(DISKCENTER_COPYRIGHT)
+        LSMinimumSystemVersion: "15.0"
+        LSApplicationCategoryType: public.app-category.utilities
+        # No App Sandbox: writing to /dev/rdiskN is incompatible with the
+        # sandbox. The app is distributed outside the Mac App Store.
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jensyleo.diskcenter
+        PRODUCT_NAME: DiskCenter
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ENABLE_APP_SANDBOX: NO
