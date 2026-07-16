@@ -3,17 +3,23 @@
 A native macOS disk administration center. DiskCenter performs advanced storage
 tasks — imaging, cloning, restore, verification, SMART, repair and secure erase —
 through a modern, safety-first graphical interface built on the system's own
-tools (`diskutil`, `dd`, `asr`, `hdiutil`, `gpt`, `smartctl`).
+tools (`diskutil`, `dd`, and optionally `smartctl` for detailed SMART attributes
+and `gzip`/`xz`/`zstd` for image compression).
 
 It does not replace those tools; it unifies them so operations are transparent
 and never a memorized command.
 
 ## Status
 
-Early scaffold. The core (`DiskCenterCore`) discovers disks by parsing
-`diskutil list -plist` (property lists only — text output is never parsed). The
-app lists disks and partitions read-only. Destructive operations are gated for
-later phases behind the validation and confirmation rules described in the spec.
+Phases 0–4 of the project roadmap are implemented: disk/partition discovery
+(`diskutil list -plist`/`info -plist` only — text output is never parsed),
+SMART status, mount/unmount, a Dashboard overview, disk imaging with checksums,
+GPT backup, disk verification and repair, media-aware secure erase, disk
+cloning, image restore, bootable USB creation, benchmarking, image compression,
+operation history, preferences, and scheduled backups. All destructive
+operations (secure erase, restore, clone, create bootable USB) require a red
+confirmation screen and show the exact command in a simulation-mode preview
+before anything runs. Manual testing on real hardware is still in progress.
 
 ## Design principles
 
