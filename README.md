@@ -9,17 +9,18 @@ and `gzip`/`xz`/`zstd` for image compression).
 It does not replace those tools; it unifies them so operations are transparent
 and never a memorized command.
 
-## Status
+## Features
 
-Phases 0–4 of the project roadmap are implemented: disk/partition discovery
-(`diskutil list -plist`/`info -plist` only — text output is never parsed),
-SMART status, mount/unmount, a Dashboard overview, disk imaging with checksums,
-GPT backup, disk verification and repair, media-aware secure erase, disk
-cloning, image restore, bootable USB creation, benchmarking, image compression,
-operation history, preferences, and scheduled backups. All destructive
-operations (secure erase, restore, clone, create bootable USB) require a red
-confirmation screen and show the exact command in a simulation-mode preview
-before anything runs. Manual testing on real hardware is still in progress.
+- Disk and partition discovery, SMART status, mount/unmount, and a Dashboard
+  overview.
+- Disk imaging with checksums, GPT backup, disk verification and repair.
+- Media-aware secure erase, disk cloning, image restore, and bootable USB
+  creation.
+- Benchmarking, image compression, operation history, preferences, and
+  scheduled backups.
+- Every destructive operation (secure erase, restore, clone, create bootable
+  USB) requires a red confirmation screen and shows the exact command before
+  anything runs.
 
 ## Design principles
 
